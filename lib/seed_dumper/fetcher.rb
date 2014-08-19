@@ -3,6 +3,15 @@ module SeedDumper
   # Dumper
   class Fetcher
 
+    def is_datetime?(value)
+      # Sun, 25 Nov 2012 23:36:23 EST -05:00
+      if (value =~ /\A[A-Za-z]{3,10}, [0-9]{1,2} [A-Za-z]{3,10} [0-9]{2,4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} [A-Za-z]{3}.*\Z/) != nil
+        return true
+      else
+        return false
+      end
+    end
+
     def self.fetch_data(klass, options={})
       # WHEN I convert from MySQL to Postgresql, having the timestamps matters!
       ignore = [] #['created_at', 'updated_at']
@@ -25,7 +34,7 @@ module SeedDumper
 
             if not value.nil?
               #if vc == DateTime or (['created_at','updated_at','ordered_at','deleted_at'].include?(key)) or key.ends_with?('_at')
-              if vc == DateTime or key.end_with?('_at')
+              if vc == DateTime or key.end_with?('_at') or is_datetime?(value)
                 value_or_method = "DateTime.parse('#{value}')"
               elsif vc == Date
                 value_or_method = "Date.parse('#{value}')"

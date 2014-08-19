@@ -3,7 +3,7 @@ module SeedDumper
   # Dumper
   class Fetcher
 
-    def is_datetime?(value)
+    def self.is_datetime?(value)
       # Sun, 25 Nov 2012 23:36:23 EST -05:00
       if (value =~ /\A[A-Za-z]{3,10}, [0-9]{1,2} [A-Za-z]{3,10} [0-9]{2,4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} [A-Za-z]{3}.*\Z/) != nil
         return true

@@ -37,7 +37,7 @@ module SeedDumper
                 value_or_method = value
               end
 
-              attr_s.push("#{key.to_sym.inspect} => #{value_or_method}')")
+              attr_s.push("#{key.to_sym.inspect} => #{value_or_method}")
             end
 
 

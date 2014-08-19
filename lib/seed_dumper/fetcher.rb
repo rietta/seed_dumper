@@ -15,12 +15,18 @@ module SeedDumper
         attr_s = [];
 
         record.attributes.delete_if { |k, v| ignore.include?(k) }.each do |key, value|
+          vc = value.class
+
           value = value.class == Time ? "\"#{value}\"" : value.inspect
           value = nil if value.is_a?(String) && value == "\"\""
           value = nil if value == 'nil' || value == "nil"
 
           if 'created_at' == key or 'updated_at' == key
             attr_s.push("#{key.to_sym.inspect} => DateTime.parse('#{value}')")
+          elsif vc == DateTime
+            attr_s.push("#{key.to_sym.inspect} => DateTime.parse('#{value}')")
+          elsif vc == Date
+            attr_s.push("#{key.to_sym.inspect} => Date.parse('#{value}')")
           elsif not value.nil?
             attr_s.push("#{key.to_sym.inspect} => #{value}")# unless key == 'id'
           end

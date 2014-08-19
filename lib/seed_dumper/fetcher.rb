@@ -24,15 +24,20 @@ module SeedDumper
             value = nil if value == 'nil' || value == "nil"
 
             if not value.nil?
-              if vc == DateTime or ('created_at' == key or 'updated_at' == key)
-                attr_s.push("#{key.to_sym.inspect} => DateTime.parse('#{value}')")
+              #if vc == DateTime or (['created_at','updated_at','ordered_at','deleted_at'].include?(key)) or key.ends_with?('_at')
+              if vc == DateTime or key.end_with?('_at')
+                value_or_method = "DateTime.parse('#{value}')"
               elsif vc == Date
-                attr_s.push("#{key.to_sym.inspect} => Date.parse('#{value}')")
+                value_or_method = "Date.parse('#{value}')"
               elsif vc == Time
-                attr_s.push("#{key.to_sym.inspect} => Time.parse('#{value}')")
+                value_or_method = "Time.parse('#{value}')"
+              elsif BigDecimal == vc
+                value_or_method = value.to_f
               else
-                attr_s.push("#{key.to_sym.inspect} => #{value}")# unless key == 'id'
+                value_or_method = value
               end
+
+              attr_s.push("#{key.to_sym.inspect} => #{value_or_method}')")
             end
 
 

@@ -19,9 +19,13 @@ module SeedDumper
           value = nil if value.is_a?(String) && value == "\"\""
           value = nil if value == 'nil' || value == "nil"
 
-          unless value.nil?
+          if 'created_at' == key or 'updated_at' == key
+            attr_s.push("#{key.to_sym.inspect} => DateTime.parse('#{value}')")
+          elsif not value.nil?
             attr_s.push("#{key.to_sym.inspect} => #{value}")# unless key == 'id'
           end
+
+
         end
 
         record_dump = "#{model_name.camelize}.create(#{attr_s.join(', ')})"

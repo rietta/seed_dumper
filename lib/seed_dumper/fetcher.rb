@@ -27,6 +27,8 @@ module SeedDumper
             attr_s.push("#{key.to_sym.inspect} => DateTime.parse('#{value}')")
           elsif vc == Date
             attr_s.push("#{key.to_sym.inspect} => Date.parse('#{value}')")
+          elsif vc == Time
+            attr_s.push("#{key.to_sym.inspect} => Time.parse('#{value}')")
           elsif not value.nil?
             attr_s.push("#{key.to_sym.inspect} => #{value}")# unless key == 'id'
           end
